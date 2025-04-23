@@ -1,71 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - User List</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-
-  <div class="container mt-5">
-    <h2 class="mb-4">User List</h2>
-    <div class="table-responsive">
-      <table class="table table-striped table-bordered align-middle">
-        <thead class="table-dark">
-          <tr>
-            <th scope="col">#ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Role</th>
-            <th scope="col">Profile Picture</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($users as $user)
-            <tr>
-              <th scope="row">{{ $user->id }}</th>
-              <td>{{ $user->name }}</td>
-              <td>{{ $user->email }}</td>
-              <td>
-                @if($user->role === 'admin')
-                    <span class="badge bg-success">
-                @elseif($user->role === 'recruiter')
-                    <span class="badge bg-warning">
-                @else
-                    <span class="badge bg-secondary">
-                @endif
-                {{ ucfirst($user->role) }}
-                </span>
-              </td>
-              <td>
+@extends('admin.admin-layout')
+@section('content')
+<div class="container mt-5 card z-index-2 h-100">
+  <div class="mb-4 text-2 card-header pb-0 d-flex justify-content-between">
+   <h5> User List</h5>
+   <a href="{{ route('admin.user.create') }}" class="btn btn-primary mb-3">Create User</a>
+  </div>
+  <div class="table-responsive p-0">
+    <table class="table align-items-center mb-0 table-striped table-bordered">
+      <thead class="">
+        <tr>
+          <th class="text-uppercase  text-xxs font-weight-bolder">ID</th>
+          <th class="text-uppercase  text-xxs font-weight-bolder">Profile</th>
+          <th class="text-uppercase  text-xxs font-weight-bolder">Role</th>
+          <th class="text-uppercase  text-xxs font-weight-bolder">Email</th>
+          <th class="text-uppercase  text-xxs font-weight-bolder">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach ($users as $user)
+        <tr>
+          <td>{{ $user->id }}</td>
+          <td>
+            <div class="d-flex px-2 py-1">
+              <div>
                 @if ($user->profile_picture && $user->profile_picture !== 'profile-picture.jpg')
-                  <img src="{{ asset('storage/uploads/' . $user->profile_picture) }}" alt="Profile" width="50px" class="rounded-circle">
+                  <img src="{{ asset('storage/uploads/' . $user->profile_picture) }}" class="avatar avatar-sm me-3 rounded-circle" alt="Profile">
                 @else
-                  <img src="{{ asset('default-images/profile-picture.jpg') }}" alt="Default" width="50px" class="rounded-circle">
+                  <img src="{{ asset('default-images/profile-picture.jpg') }}" class="avatar avatar-sm me-3 rounded-circle" alt="Default">
                 @endif
-              </td>
-              <td>
-                {{-- route('admin.users.edit', $user->id)
-                     route('admin.users.destroy', $user->id) --}}
-                <a href="#" class="btn btn-sm btn-primary">Edit</a>
-                <form action="#" method="POST" class="d-inline">
-                  @csrf
-                  @method('DELETE')
-                  <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                </form>
-              </td>
-            </tr>
-          @endforeach
-        </tbody>
-      </table>
-    </div>
-
-    <div class="mt-3">
+              </div>
+              <div class="d-flex flex-column justify-content-center">
+                <h6 class="mb-0 text-sm">{{ $user->name }}</h6>
+                <p class="text-xs text-secondary mb-0">{{ $user->email }}</p>
+              </div>
+            </div>
+          </td>
+          <td>
+            @php
+              $badgeClass = match($user->role) {
+                'admin' => 'bg-gradient-success',
+                'recruiter' => 'bg-gradient-warning',
+                default => 'bg-gradient-secondary'
+              };
+            @endphp
+            <span class="badge badge-sm {{ $badgeClass }}">{{ ucfirst($user->role) }}</span>
+          </td>
+          <td class="text-center">{{ $user->email }} <span style="float: right"> <a href="{{route('admin.user.show',$user->id)}}"><i class="fa-solid fa-eye"></i></a></span></td>
+          <td class="text-center">
+            <a href="{{route('admin.user.edit',$user->id)}}" class="btn btn-sm btn-primary">Edit</a>
+            <form action="{{route('admin.user.delete',$user->id)}}" method="POST" class="d-inline">
+              @csrf
+              @method('DELETE')
+              <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+            </form>
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+    <div class="mt-3 px-3">
       {{ $users->links() }}
     </div>
   </div>
-
-</body>
-</html>
+</div>
+@endsection
