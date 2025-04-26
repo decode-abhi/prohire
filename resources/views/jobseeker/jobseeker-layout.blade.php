@@ -157,7 +157,19 @@
             <li class="nav-item d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-white font-weight-bold px-0">
                 <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">Sign In</span>
+                @if(auth()->check())
+                <span class="d-sm-inline">
+                  <form action="{{route('logout')}}" method="post">
+                    @csrf
+                    <button type="submit" class="bg-transperent">logout</button>
+                  </form>
+                </span>
+            @else
+                <span class="d-sm-inline">
+                    <a href="{{ route('login') }}"class="text-light">Sign In</a>
+                </span>
+            @endif
+            
               </a>
             </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -255,6 +267,7 @@
     <div class="container-fluid py-4">
       <div class="main-container">
         <!-- add main content for admin site -->
+        <x-alert-message />
         @yield('content')
       </div>
       <footer class="footer pt-3  ">

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ApplicationController;
 use App\Http\Middleware\RoleCheck;
 use App\Http\Middleware\RoleMiddleware;
 use bootstrap\app;
@@ -58,6 +59,12 @@ Route::middleware('auth')->group(function () {
         // job routes
             Route::get('job/index',[JobController::class,'index'])->name('job.index');
             Route::get('job/show/{id}',[JobController::class,'show'])->name('job.show');
+            Route::get('/application/index',[ApplicationController::class, 'index'])->name('application.index');
+            Route::post('/applciation/store/{id}',[ApplicationController::class, 'store'])->name('application.store');
+            Route::get('/application/edit/{id}',[ApplicationController::class, 'edit'])->name('application.edit');
+            Route::post('/applciation/update/{id}',[ApplicationController::class, 'update'])->name('application.update');
+            Route::get('/application/delete/{id}',[ApplicationController::class, 'destroy'])->name('application.delete');
+            Route::get('/application/show/{id}',[ApplicationController::class, 'show'])->name('application.show');
             //admin job middleware
         Route::middleware(RoleMiddleware::class.':admin')->group(function(){
             Route::get('job/edit/{id}',[JobController::class,'edit'])->name('job.edit');
@@ -71,9 +78,13 @@ Route::middleware('auth')->group(function () {
             Route::get('job/allJobs/{id}',[JobController::class,'recruiterJobs'])->name('job.allJobs');
             
         });
+
+        Route::middleware(RoleMiddleware::class.':jobseeker')->group(function(){
+            Route::get('/job/{job}/apply',[ApplicationController::class, 'create'])->name('application.create');
+        });
            
-           
-            
+        
+
 });
 
 

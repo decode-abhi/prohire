@@ -252,6 +252,7 @@
     <div class="container-fluid py-4">
       <div class="main-container">
         <!-- add main content for admin site -->
+        <x-alert-message />
         @yield('content')
       </div>
       <footer class="footer pt-3  ">
