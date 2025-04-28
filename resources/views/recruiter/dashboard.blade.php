@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <!-- recruiter/dashboard.blade.php -->
+@extend('recruiter.recruiter-layout')
 <h1>Welcome recruiter!</h1>
 <p>Your dashboard content goes here.</p>
 <form method="POST" action="{{ route('logout') }}">

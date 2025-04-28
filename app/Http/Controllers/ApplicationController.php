@@ -10,7 +10,7 @@ class ApplicationController extends Controller
 {
    public function index(){
      if(auth()->user()->role == 'admin'){
-          $applications = Application::paginate(10);
+          $applications = Application::orderBy('id','desc')->paginate(20);
      }elseif (auth()->user()->role == 'jobseeker') {
          $applications = Application::where('user_id',user()->id())->get();
      }elseif (auth()->user()->role == 'recruiter') {
@@ -21,13 +21,12 @@ class ApplicationController extends Controller
         return view('application.index', compact('applications'));
    }
    public function create($job){
-     
      $applications = Application::findOrFail($job);
         return view('application.create',compact('applications'));
    }
+
    public function store(Request $request, $id){
-    
-      $validate  = $request->validate([
+       $request->validate([
          'job_id' => 'required',
          'cover_letter' => 'required',
          'resume' => 'required|mimes:pdf,doc,docx|max:10000',
@@ -44,22 +43,25 @@ class ApplicationController extends Controller
           'applicant_name' => $request->applicant_name,
           'status' => 'applied', // Default status
       ]);
-
         return redirect()->route('job.index')->with('success', 'Job applied successfully');
    }
+
    public function edit(){
 
         $applications = Application::paginate(10);
         return view('application.index', compact('applications'));
    }
+
    public function update(){
         $applications = Application::paginate(10);
         return view('application.index', compact('applications'));
    }
+
    public function destroy(){
         $applications = Application::paginate(10);
         return view('application.index', compact('applications'));
    }
+   
    public function show(){
         $applications = Application::paginate(10);
         return view('application.index', compact('applications'));

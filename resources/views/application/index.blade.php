@@ -18,6 +18,7 @@
             <table class="table table-bordered align-middle">
                 <thead class="table-primary text-center">
                     <tr>
+                        <th scope="col">Sr. No</th>
                         <th scope="col">Job Title</th>
                         <th scope="col">Company</th>
                         <th scope="col">Resume</th>
@@ -26,13 +27,14 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white">
-                    @foreach($applications as $application)
+                    @foreach($applications as $index => $application)
                         <tr>
+                            <td>{{$index + 1}}</td>
                             <td class="text-capitalize fw-semibold">{{ $application->job->title }}</td>
                             <td>{{ $application->job->company }}</td>
                             <td class="text-center">
-                                @if($application->resume_path)
-                                    <a href="{{ asset('storage/' . $application->resume_path) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                @if($application->resume)
+                                    <a href="{{ asset('storage/uploads/' . $application->resume) }}" target="_blank" class="btn btn-sm btn-outline-primary">
                                         View Resume
                                     </a>
                                 @else
@@ -44,6 +46,9 @@
                         </tr>
                     @endforeach
                 </tbody>
+                <div class="table-footer">
+                    {{$applications->links('pagination::bootstrap-5')}}
+                </div>
             </table>
         </div>
     @else
