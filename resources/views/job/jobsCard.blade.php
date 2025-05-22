@@ -1,5 +1,6 @@
-<link href="bootstrap.min.css" rel="stylesheet">
-<link href="custom.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+
 
 <style>
    #job-list .transition{
@@ -19,7 +20,7 @@
         transform: rotate(276deg); 
     }
 </style>
-<div id="job-list" class="space-y-4 p-4">
+<div id="job-list" class="space-y-4 mb-4">
     <!-- One Job Card -->
     <div class="main-conatiner d-flex justify-content-between">
         <div class="border rounded-lg p-4 shadow hover:shadow-md transition col-7">
@@ -43,10 +44,10 @@
                 <p class="text-xs text-gray-500 mt-2">{{$job->create_at}}</p>
         </div>
         <div class="container-right border rounded-lg p-4 shadow hover:shadow-md transition col-4">
-            <a href="{{ route('application.create', ['job' => $job->id]) }}" class="btn btn-primary">Apply Now</a>
-            <a href="#" class="btn btn-secondary"><i class="fa-regular fa-bookmark"></i></a>
-            <a href="#" class="btn btn-secondary"><i class="fa-solid fa-ban"></i></a>
-            <a href="#" class="btn btn-secondary"><i class="fa-solid fa-link"></i></a>
+            <a href="{{ route('application.create', ['job' => $job->id]) }}" class="btn btn-primary mb-2">Apply Now</a>
+            <a href="#" class="btn btn-secondary mb-2"><i class="fa-regular fa-bookmark"></i></a>
+            <a href="#" class="btn btn-secondary mb-2"><i class="fa-solid fa-ban"></i></a>
+            <a href="#" class="btn btn-secondary mb-2"><i class="fa-solid fa-link"></i></a>
         </div>
     </div>
 </div>

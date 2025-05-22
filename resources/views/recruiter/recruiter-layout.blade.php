@@ -130,7 +130,7 @@
   <div class="container-fluid">
     
 
-    <a class="navbar-brand" href="#"><img class="logo" src="{{asset('default-images\prohire-logo.png')}}" alt=""><strong></strong></a>
+    <a class="navbar-brand" href="#"><img class="logo" src="{{asset('default-images\prohire-logo-white.png')}}" alt=""><strong></strong></a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
       <span class="navbar-toggler-icon"></span>
@@ -196,7 +196,7 @@
             <img src="{{asset('default-images\profile-picture.jpg')}}" class="rounded-circle logo" alt="User">
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">My Profile</a></li>
+            <li><a class="dropdown-item" href="{{route('user.profile-update')}}">My Profile</a></li>
             <li><a class="dropdown-item" href="#">Settings</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#">Logout</a></li>

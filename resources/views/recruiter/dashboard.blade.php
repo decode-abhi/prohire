@@ -1,4 +1,4 @@
-@extend('recruiter.recruiter-layout')
+@extends('recruiter.recruiter-layout')
 <h1>Welcome recruiter!</h1>
 <p>Your dashboard content goes here.</p>
 <form method="POST" action="{{ route('logout') }}">

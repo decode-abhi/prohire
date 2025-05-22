@@ -7,10 +7,33 @@ use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
-   public function index(){
-    $jobs = Job::orderBy('id','desc')->paginate(10);
-     return view('job.index', compact('jobs'));
-   }
+   public function index(Request $request)
+{
+    $search = $request->input('search');
+    $location = $request->input('location');
+    $type = $request->input('type');
+
+    $jobs = Job::query()
+        ->when($search, function ($query, $search) {
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('location', 'like', "%{$search}%")
+                  ->orWhere('type', 'like', "%{$search}%");
+            });
+        })
+        ->when($location, function ($query, $location) {
+            $query->where('location', 'like', "%{$location}%");
+        })
+        ->when($type, function ($query, $type) {
+            $query->where('type', 'like', "%{$type}%");
+        })
+        ->orderBy('id', 'desc')
+        ->paginate(10);
+
+    return view('job.index', compact('jobs'));
+}
+
    public function create(){
      return view('job.create');
    }
@@ -49,5 +72,9 @@ class JobController extends Controller
     $jobs = Job::where('user_id', $id)->orderBy('id', 'desc')->paginate(10);
     return view('recruiter.index',compact('jobs'));
 
+   }
+
+   public function search(){
+    
    }
 }

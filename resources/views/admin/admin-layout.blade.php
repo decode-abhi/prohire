@@ -62,8 +62,14 @@
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-calendar-grid-58 text-dark text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Tables</span>
+            <span class="nav-link-text ms-1">Users</span>
           </a>
+          <div class="sub-menu">
+            <ul>
+              <li><a href="#">All Users</a></li>
+              <li><a href="#">Create User</a></li>
+            </ul>
+          </div>
         </li>
         <li class="nav-item">
           <a class="nav-link " href="../pages/billing.html">
@@ -97,7 +103,7 @@
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Profile</span>
+            <span class="nav-link-text ms-1"><a href="{{route('user.profile-update')}}">Profile</a></span>
           </a>
         </li>
         <li class="nav-item">
@@ -263,9 +269,9 @@
                 © <script>
                   document.write(new Date().getFullYear())
                 </script>,
-                made with <i class="fa fa-heart"></i> by
-                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
-                for a better web.
+                made with <i class="fa fa-goal"></i> by
+                <a href="#" class="font-weight-bold" target="_blank">ProHire & Company</a>
+                for a better job.
               </div>
             </div>
             <div class="col-lg-6">
@@ -458,6 +464,7 @@
       }
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
+    var subMenu = document.querySelectorAll('')
   </script>
   
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->

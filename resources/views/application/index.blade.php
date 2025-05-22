@@ -24,6 +24,9 @@
                         <th scope="col">Resume</th>
                         <th scope="col">Cover Letter</th>
                         <th scope="col">Applied On</th>
+                        <th scope="col">Show</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white">
@@ -31,7 +34,7 @@
                         <tr>
                             <td>{{$index + 1}}</td>
                             <td class="text-capitalize fw-semibold">{{ $application->job->title }}</td>
-                            <td>{{ $application->job->company }}</td>
+                            <td>{{ $application->job->user->name }}</td>
                             <td class="text-center">
                                 @if($application->resume)
                                     <a href="{{ asset('storage/uploads/' . $application->resume) }}" target="_blank" class="btn btn-sm btn-outline-primary">
@@ -43,6 +46,9 @@
                             </td>
                             <td>{{ Str::limit(strip_tags($application->cover_letter), 50) }}</td>
                             <td>{{ $application->created_at->format('d M, Y') }}</td>
+                            <td class="text-center"><a href="{{ route('application.show',$application->id) }}"><i class="fa-solid fa-eye"></i></a></td>
+                            <td><a href="{{route('application.edit',$application->id)}}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a></td>
+                            <td><a href="{{route('application.delete',$application->id)}}" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a></td>
                         </tr>
                     @endforeach
                 </tbody>

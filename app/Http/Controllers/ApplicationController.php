@@ -5,19 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ApplicationController extends Controller
 {
    public function index(){
-     if(auth()->user()->role == 'admin'){
+     $user = Auth::user();
+     if($user->role == 'admin'){
           $applications = Application::orderBy('id','desc')->paginate(20);
-     }elseif (auth()->user()->role == 'jobseeker') {
-         $applications = Application::where('user_id',user()->id())->get();
-     }elseif (auth()->user()->role == 'recruiter') {
-          $applications = Application::whereHas('job', function($query){
-               $query->where('user_id',auth()->id());
-          })->get();
-     }
+
+     }elseif ($user->role == 'jobseeker') {
+         $applications = Application::where('user_id',$user->id)->paginate(10);
+
+     }elseif ($user->role == 'recruiter') {
+          $applications = Application::whereHas('job', function($query) use ($user) {
+              $query->where('user_id', $user->id);
+          })->paginate(10);
+      }
+      
         return view('application.index', compact('applications'));
    }
    public function create($job){
@@ -46,22 +52,59 @@ class ApplicationController extends Controller
         return redirect()->route('job.index')->with('success', 'Job applied successfully');
    }
 
-   public function edit(){
+   public function edit($id){
 
-        $applications = Application::paginate(10);
-        return view('application.index', compact('applications'));
+        $applications = Application::findOrFail($id);
+        return view('application.edit', compact('applications'));
    }
 
-   public function update(){
-        $applications = Application::paginate(10);
-        return view('application.index', compact('applications'));
-   }
-
-   public function destroy(){
-        $applications = Application::paginate(10);
-        return view('application.index', compact('applications'));
+   public function update(Request $request, $id)
+   {
+       $request->validate([
+           'job_id' => 'required',
+           'cover_letter' => 'required',
+           'resume' => 'nullable|mimes:pdf,doc,docx|max:10000',
+           'email' => 'required|email',
+       ]);
+   
+       $application = Application::findOrFail($id);
+   
+       $resumePath = $application->resume; // default to existing
+   
+       if ($request->hasFile('resume')) {
+           $file = $request->file('resume');
+           $resumePath = time() . '.' . $file->extension();
+           $file->storeAs('uploads', $resumePath, 'public');
+       }
+   
+       $application->update([
+           'job_id' => $request->job_id,
+           'user_id' => auth()->id(), // or $request->user_id if passed
+           'cover_letter' => $request->cover_letter,
+           'resume' => $resumePath,
+           'applicant_name' => $request->applicant_name,
+           'status' => 'applied',
+       ]);
+   
+       return redirect()->route('application.index')->with('success', 'Application updated successfully');
    }
    
+
+   public function destroy($id)
+{
+    $application = Application::findOrFail($id);
+
+    // Delete resume file if it exists
+    if ($application->resume && \Storage::disk('public')->exists('uploads/' . $application->resume)) {
+        \Storage::disk('public')->delete('uploads/' . $application->resume);
+    }
+
+    $application->delete();
+
+    return redirect()->route('application.index')->with('success', 'Application deleted successfully');
+}
+
+
    public function show(){
         $applications = Application::paginate(10);
         return view('application.index', compact('applications'));

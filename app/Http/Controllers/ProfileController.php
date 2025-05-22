@@ -57,4 +57,8 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function profileForm(Request $request){
+        return view('admin.user.profile_form');
+    }
 }

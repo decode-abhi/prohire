@@ -130,7 +130,7 @@
   <div class="container-fluid">
     
 
-    <a class="navbar-brand" href="#"><img class="logo" src="{{asset('default-images\prohire-logo.png')}}" alt=""><strong></strong></a>
+    <a class="navbar-brand" href="#"><img class="logo" src="{{asset('default-images\prohire-logo-white.png')}}" alt=""><strong></strong></a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
       <span class="navbar-toggler-icon"></span>
@@ -196,10 +196,15 @@
             <img src="{{asset('default-images\profile-picture.jpg')}}" class="rounded-circle logo" alt="User">
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">My Profile</a></li>
+            <li><a class="dropdown-item" href="{{route('user.profile-update')}}">My Profile</a></li>
             <li><a class="dropdown-item" href="#">Settings</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Logout</a></li>
+            <li>
+              <form action="/logout" method="post">
+                @csrf
+                <button type="submit">Logout</button>
+              </form>
+            </li>
           </ul>
         </li>
       </ul>
@@ -256,9 +261,13 @@
     <a href="#">Settings</a>
   </div>
 </div>
+{{-- jquery cdn --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- Bootstrap JS -->
+@yield('script')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+
   // Sidebar Toggle Script
   document.getElementById('menu-toggle').addEventListener('click', function () {
     document.body.classList.toggle('sidebar-collapsed');
