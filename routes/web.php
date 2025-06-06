@@ -28,8 +28,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/update-profile',[ProfileController::class,'profileForm'])->name('user.profile-update');
-
+    Route::get('/profileBuilder/{user_id}',[ProfileController::class,'profileForm'])->name('user.profileBuilder');
+    Route::post('/user-profile/update/{user_id}',[ProfileController::class,'profileUpdate'])->name('user-profile.update');
+    Route::get('/application/show/{appId}',[ApplicationController::class, 'show'])->name('application.show');
+    // job routes
+    Route::get('job/index',[JobController::class,'index'])->name('job.index');
+    Route::get('job/show/{id}',[JobController::class,'show'])->name('job.show');
+    // application routes
+    Route::get('/application/index',[ApplicationController::class, 'index'])->name('application.index');
+    Route::get('/application/edit/{id}',[ApplicationController::class, 'edit'])->name('application.edit');
+    Route::post('/applciation/update/{id}',[ApplicationController::class, 'update'])->name('application.update');
+    Route::get('/application/delete/{id}',[ApplicationController::class, 'destroy'])->name('application.delete');
+            
     // Default auth dashboard
     Route::middleware([RoleCheck::class . ':jobseeker'])->group(function () {
         Route::get('/jobseeker/dashboard', [DashboardController::class, 'jobseekerDashboard'])->name('jobseeker.dashboard');
@@ -41,6 +51,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create');
         Route::post('/jobs/store', [JobController::class, 'store'])->name('jobs.store');
         Route::get('/jobs/manage', [JobController::class, 'manage'])->name('jobs.manage');
+        Route::get('/recruiter/applicants',[ApplicationController::class, 'appliedApplicants'])->name('recruiter.applicants');
     });
 
     // Admin-only routes
@@ -57,16 +68,7 @@ Route::middleware('auth')->group(function () {
         });
         
     });
-        // job routes
-            Route::get('job/index',[JobController::class,'index'])->name('job.index');
-            Route::get('job/show/{id}',[JobController::class,'show'])->name('job.show');
-            Route::get('/application/index',[ApplicationController::class, 'index'])->name('application.index');
-            
-            Route::get('/application/edit/{id}',[ApplicationController::class, 'edit'])->name('application.edit');
-            Route::post('/applciation/update/{id}',[ApplicationController::class, 'update'])->name('application.update');
-            Route::get('/application/delete/{id}',[ApplicationController::class, 'destroy'])->name('application.delete');
-            Route::get('/application/show/{id}',[ApplicationController::class, 'show'])->name('application.show');
-            
+        
             //admin job middleware
         Route::middleware(RoleMiddleware::class.':admin')->group(function(){
             Route::get('job/edit/{id}',[JobController::class,'edit'])->name('job.edit');

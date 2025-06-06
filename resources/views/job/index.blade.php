@@ -3,6 +3,7 @@
          'jobseeker.jobseeker-layout'))
 
 @section('content')
+@include('message')
 <div class="container mt-5">
   <div class="">
     <div class="mb-2">

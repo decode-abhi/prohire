@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Application;
 use App\Models\Job;
+use App\Models\UserProfile;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -57,6 +58,6 @@ class User extends Authenticatable
     }
 
     public function user_profile(){
-        return $this->hasOne(User_profile::class);
+        return $this->hasOne(UserProfile::class);
     }
 }

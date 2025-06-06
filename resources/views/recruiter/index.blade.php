@@ -3,6 +3,7 @@
          'jobseeker.jobseeker-layout'))
 
 @section('content')
+@include('message')
 <div class="container mt-5">
   <div class="card shadow-lg rounded-4">
     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">

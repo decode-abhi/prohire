@@ -1,6 +1,7 @@
 @extends(auth()->user()->role === 'admin' ? 'admin.admin-layout' : (auth()->user()->role === 'recruiter' ? 'recruiter.recruiter-layout' : 'jobseeker.jobseeker-layout'))
 
 @section('content')
+@include('message')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold">My Applications</h2>

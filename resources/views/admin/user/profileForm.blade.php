@@ -1,8 +1,9 @@
 @extends(auth()->user()->role == 'admin' ? 'admin.admin-layout' : (auth()->user()->role == 'recruiter' ? 'recruiter.recruiter-layout' : 'jobseeker.jobseeker-layout'))
 @section('content')
 <!-- resources/views/user/profile_form.blade.php -->
+{{--  --}}
 
-<form action="{{ route('user-profile.update', $userProfile->id ?? '') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('user-profile.update',$id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @if(isset($userProfile))
         @method('PUT')
@@ -10,9 +11,32 @@
 
     <div class="container mt-4">
         <div class="row">
-
+            
             <!-- Personal Info -->
             <div class="col-md-6">
+                <div class="mb-3">
+                    @include('message')
+                    @php
+                        $user = auth()->user();
+                        $profile = $user->user_profile;
+                    @endphp
+                    
+
+    <label class="form-label">Profile Picture</label>
+    <input type="file" name="profile_picture" id="profile_picture" class="form-control" accept="image/*">
+    <div class="mt-2">
+        <img id="profile_picture_preview" src="{{ isset($userProfile->profile_picture) ? asset('storage/profile_pictures/' . $userProfile->profile_picture) : '#' }}" alt="Preview" style="max-height: 150px; display: {{ isset($userProfile->profile_picture) ? 'block' : 'none' }};">
+    </div>
+</div>
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" name="name" disabled class="form-control" value="{{$user->name ? $user->name : '' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="text" name="email" disabled class="form-control" value="{{$user->email ? $user->email : '' }}">
+                </div>
+               
                 <div class="mb-3">
                     <label class="form-label">Phone</label>
                     <input type="text" name="phone" class="form-control" value="{{ old('phone', $userProfile->phone ?? '') }}">
@@ -46,10 +70,11 @@
                     <input type="text" name="qualification" class="form-control" value="{{ old('qualification', $userProfile->qualification ?? '') }}">
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Certificates</label>
-                    <textarea name="certificates" class="form-control">{{ old('certificates', $userProfile->certificates ?? '') }}</textarea>
-                </div>
+             <div class="mb-3">
+    <label class="form-label">Certificates (Upload multiple files)</label>
+    <input type="file" name="certificates[]" id="certificates" class="form-control" multiple accept="image/*,application/pdf">
+    <div class="mt-2 d-flex gap-2 flex-wrap" id="certificates_preview"></div>
+</div>
 
                 <div class="mb-3">
                     <label class="form-label">Experience</label>
@@ -98,6 +123,57 @@
         </div>
     </div>
 </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Profile Picture Preview
+        const profileInput = document.getElementById('profile_picture');
+        const profilePreview = document.getElementById('profile_picture_preview');
+
+        profileInput?.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    profilePreview.src = e.target.result;
+                    profilePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Certificates Preview
+        const certificatesInput = document.getElementById('certificates');
+        const certificatesPreview = document.getElementById('certificates_preview');
+
+        certificatesInput?.addEventListener('change', function () {
+            certificatesPreview.innerHTML = ''; // Clear previous previews
+            Array.from(this.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewElement = document.createElement(file.type.startsWith('image/') ? 'img' : 'a');
+
+                    if (file.type.startsWith('image/')) {
+                        previewElement.src = e.target.result;
+                        previewElement.style.maxHeight = '100px';
+                        previewElement.style.marginRight = '10px';
+                        previewElement.style.border = '1px solid #ccc';
+                        previewElement.style.padding = '4px';
+                    } else {
+                        previewElement.href = e.target.result;
+                        previewElement.textContent = file.name;
+                        previewElement.target = "_blank";
+                        previewElement.style.display = 'block';
+                    }
+
+                    certificatesPreview.appendChild(previewElement);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    });
+</script>
+
 
 
 @endsection

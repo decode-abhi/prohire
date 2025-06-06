@@ -195,8 +195,12 @@
           <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
             <img src="{{asset('default-images\profile-picture.jpg')}}" class="rounded-circle logo" alt="User">
           </a>
+          @php
+            $user_id = auth()->user()->id;
+            
+          @endphp
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="{{route('user.profile-update')}}">My Profile</a></li>
+            <li><a class="dropdown-item" href="{{route('user.profileBuilder',$user_id)}}">My Profile</a></li>
             <li><a class="dropdown-item" href="#">Settings</a></li>
             <li><hr class="dropdown-divider"></li>
             <li>

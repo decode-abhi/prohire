@@ -27,5 +27,7 @@ class Job extends Model
     {
         return $this->hasMany(Application::class);  // Freelancers applying to this job
     }
-
+    protected function getTitleAttribute($value){
+        return ucwords($value);
+    }
 }

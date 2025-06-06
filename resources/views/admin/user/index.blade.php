@@ -1,5 +1,6 @@
 @extends('admin.admin-layout')
 @section('content')
+ @include('message')
 <div class="container mt-5 card z-index-2 h-100">
   <div class="mb-4 text-2 card-header pb-0 d-flex justify-content-between">
    <h5> User List</h5>
